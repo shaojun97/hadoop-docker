@@ -46,7 +46,17 @@ start-all.sh
 jps
 ```
 
+- http://localhost:50070
+- http://localhost:18088
+
+
 
 # 补充
 
+
+> 在容器外部可通过下方获取所在容器名称及ip
+
+```bash
+docker inspect -f '{{.Name}} - {{.NetworkSettings.IPAddress }}' $(docker ps -aq)
+```
 
