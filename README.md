@@ -29,7 +29,7 @@ docker run -it -h slave02 --name slave02 my-hadoop
 > 再次启动
 
 ```bash
-docker start -it master
+docker start -i master
 ```
 
 # 启动 Hadoop
