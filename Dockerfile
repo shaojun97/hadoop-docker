@@ -15,6 +15,8 @@ RUN apt-get install -y wget
 RUN apt-get install -y ssh
 RUN apt-get install -y vim
 RUN apt-get install -y unzip
+# openssh-server 用于宿主机 SSH 连接 Docker 内 Ubuntu
+RUN apt-get install openssh-server
 
 # 2. 安装 Java
 ADD jdk-8u131-linux-x64.tar.gz /opt/
@@ -39,10 +41,13 @@ COPY hadoop-config/yarn-site.xml /opt/hadoop/etc/hadoop/yarn-site.xml
 COPY hadoop-config/hadoop-env.sh /opt/hadoop/etc/hadoop/hadoop-env.sh
 # 3.3 配置完成后，执行 NameNode 的格式化
 RUN /opt/hadoop/bin/hdfs namenode -format
-# 3.4 配置 ssh 免密登录
+# 3.4 修改 SSH 配置文件, 以便宿主机 SSH 连接 Docker 内 Ubuntu
+RUN echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
+# 3.5 配置 SSH 免密登录
 RUN /etc/init.d/ssh start
 RUN ssh-keygen -f $HOME/.ssh/id_rsa -t rsa -N ''
 RUN cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 
 # 4. 配置 Hadoop 集群: 3节点: 替换容器ip地址
 COPY hadoop-config/hosts /etc/hosts
+

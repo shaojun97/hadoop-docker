@@ -19,11 +19,17 @@ docker build -t my-hadoop .
 > 从镜像中启动一个容器
 
 ```bash
-docker run -it -h master --name master -p 50070:50070 -p 18088:18088 my-hadoop
+docker run -it -h master --name master -p 50070:50070 -p 18088:18088 -p 9000:9000 -p 2222:22 my-hadoop
 
 docker run -it -h slave01 --name slave01 my-hadoop
 
 docker run -it -h slave02 --name slave02 my-hadoop
+```
+
+> 再次启动
+
+```bash
+docker start -it master
 ```
 
 # 启动 Hadoop
@@ -52,6 +58,23 @@ jps
 
 
 # 补充
+
+
+> 注意：默认 HDFS API 端口为 9000, 配置在 core-site.xml
+> master 为 主机名 (hostname)
+
+```xml
+<configuration>
+	<property>
+        <name>fs.defaultFS</name>
+        <value>hdfs://master:9000</value>
+    </property>
+    <property> 
+        <name>hadoop.tmp.dir</name> 
+        <value>/home/hadoop/temp</value>
+    </property>
+</configuration>
+```
 
 
 > 在容器外部可通过下方获取所在容器名称及ip
