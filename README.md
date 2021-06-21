@@ -19,12 +19,15 @@ docker build -t my-hadoop .
 > 从镜像中启动一个容器
 
 ```bash
-docker run -it -h master --name master -p 50070:50070 -p 18088:18088 -p 9000:9000 -p 2222:22 my-hadoop
+docker run -it -h master --name master -p 50070:50070 -p 18088:18088 -p 50075:50075 -p 50010:50010 -p 9000:9000 -p 2222:22 my-hadoop
 
 docker run -it -h slave01 --name slave01 my-hadoop
 
 docker run -it -h slave02 --name slave02 my-hadoop
 ```
+
+> 50075 端口 用作 从 HDFS Browse file system 下载文件
+> 50010 端口 用于 宿主机访问 DataNode, 不然可能会导致大文件上传HDFS失败
 
 > 再次启动
 
